@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.A.T.I.</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1b1c1d; 
+            color: #392c2c; 
+            margin: 0;
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #b11e0e; 
+            margin-bottom: 20px;
+            text-align: center;
+            width: 200%;
+            max-width: 2000px; 
+        }
+
+        h2 {
+            color: #d3594bd4; 
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 1400px; 
+        }
+
+        .contenedor-principal {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px; 
+            justify-content: flex-start; 
+            align-items: flex-start; 
+        }
+
+        .bloque {
+            background: #ffffff; 
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+            box-sizing: border-box; 
+        }
+
+        .bloque-config {
+            flex: 0 0 350px; 
+        }
+
+        .bloque-derecho {
+            flex: 1; 
+            background-color: #fcfcfc;
+            border-left: 5px solid #262728; 
+            overflow-y: auto; 
+            min-height: 600px; 
+            max-height: 85vh; 
+        }
+    
+        label {
+            font-weight: 600;
+            margin-top: 15px;
+            display: block;
+            color: #4a5568;
+        }
+
+        input[type="file"], textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #f8fafc;
+            font-family: inherit; 
+        }
+
+        textarea#pregunta {
+            height: 150px; 
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        input[type="file"]:focus, textarea:focus {
+            outline: none;
+            border-color: #1e2022;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: #25282a; 
+            color: #fcfcfc; 
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            background-color: #5e646a; 
+        }
+
+        button:active {
+            transform: translateY(1px); 
+        }
+        
+        .mensaje-vacio {
+            color: #a0aec0;
+            text-align: center;
+            margin-top: 100px;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+
+        .texto-respuesta {
+            line-height: 1.8; 
+            color: #2d3748; 
+            font-size: 1.05em;
+        }
+
+        .texto-respuesta table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        .texto-respuesta th, .texto-respuesta td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .texto-respuesta th {
+            background-color: #f7fafc;
+            color: #b11e0e; 
+            font-weight: bold;
+        }
+
+        .texto-respuesta tr:nth-child(even) {
+            background-color: #f8fafc; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1> S.A.D.I.</h1>
+    <H2>📊Sistema de Análisis de Textos Inteligente📊</H2>
+
+    <div class="contenedor-principal">
+        
+        <!-- Bloque Izquierdo -->
+        <div class="bloque bloque-config">
+            <h2 style="margin-top: 0; color: #202122; border-bottom: 2px solid #eee; padding-bottom: 10px;">Configurar</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <!-- CAMBIO: Etiquetas y formatos aceptados (PDF y Word) -->
+                <label for="archivo">1. Sube tu archivo (PDF o Word):</label>
+                <input type="file" id="archivo" name="archivo" accept=".pdf, .docx" required>
+
+                <label for="pregunta">2. Pregunta o instrucciones:</label>
+                <!-- CAMBIO: Placeholder adaptado a documentos -->
+                <textarea id="pregunta" name="pregunta" placeholder="Ej. Haz un resumen de los puntos más importantes de este documento..." required></textarea>
+
+                <button type="submit">Generar Reporte 🚀</button>
+            </form>
+        </div>
+
+        <!-- Bloque Derecho-->
+        <div class="bloque bloque-derecho">
+            <h2 style="margin-top: 0; color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px;">Resultados del Análisis</h2>
+            
+            {% if respuesta %}
+                <div class="texto-respuesta">
+                    {{ respuesta | safe }}
+                </div>
+            {% else %}
+                <div class="mensaje-vacio">
+                    <span style="font-size: 3em;">📥</span><br><br>
+                    Esperando datos... <br><br>
+                    Sube un documento y escribe una pregunta a la izquierda para visualizar el análisis aquí.
+                </div>
+            {% endif %}
+            
+        </div>
+
+    </div>
+
+</body>
+</html>
